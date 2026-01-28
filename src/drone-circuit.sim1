@@ -14,21 +14,19 @@
 
 <item itemtype="Battery" CircId="Battery-9" mainComp="false" Show_id="true" Show_Val="false" Pos="84,-300" rotation="450" hflip="1" vflip="1" label="Lipo 2S" idLabPos="-18,-22" labelrot="0" valLabPos="-10,10" valLabRot="0" Voltage="8.4 V" Resistance="1 mΩ" />
 
-<item itemtype="Battery" CircId="Battery-27" mainComp="false" Show_id="true" Show_Val="false" Pos="-92,-352" rotation="270" hflip="1" vflip="1" label="Bateria 5V" idLabPos="-18,-22" labelrot="0" valLabPos="-10,10" valLabRot="0" Voltage="5 V" Resistance="1 mΩ" />
+<item itemtype="VoltReg" CircId="LM7805-1" mainComp="false" ShowProp="Voltage" Show_id="true" Show_Val="true" Pos="-92,-352" rotation="-180" hflip="1" vflip="1" label="LM7805" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Voltage="5 V" />
 
 <item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="-356,-428" rotation="0" hflip="1" vflip="1" label="Arduino R4" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Logic_Symbol="false">
-<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="1-circuit-test/build/1-circuit-test.ino.hex" Auto_Load="false" saveEepr="true" MainMcu="true" SerialMon="-1" />
 </item>
 
 <item itemtype="Node" CircId="Node-43" mainComp="false" Pos="-64,-436" />
 
-<item itemtype="Node" CircId="Node-45" mainComp="false" Pos="-92,-332" />
+<item itemtype="Node" CircId="Node-45b" mainComp="false" Pos="-64,-332" />
 
 <item itemtype="Node" CircId="Node-Left-IN" mainComp="false" Pos="-64,-236" />
 
-<item itemtype="Node" CircId="Node-Left-GND" mainComp="false" Pos="-120,-228" />
-
-<item itemtype="Node" CircId="Node-5V-Left" mainComp="false" Pos="-64,-332" />
+<item itemtype="Node" CircId="Node-Left-GND" mainComp="false" Pos="-120,-236" />
 
 <item itemtype="Node" CircId="Node-Batt-Plus" mainComp="false" Pos="64,-316" />
 
@@ -38,15 +36,19 @@
 
 <item itemtype="Node" CircId="Node-56" mainComp="false" Pos="56,-396" />
 
-<item itemtype="Node" CircId="Node-59" mainComp="false" Pos="-148,-368" />
-
 <item itemtype="Node" CircId="Node-60" mainComp="false" Pos="-120,-436" />
 
-<item itemtype="Node" CircId="Node-64" mainComp="false" Pos="-148,-340" />
+<item itemtype="Node" CircId="Node-GND-B" mainComp="false" Pos="-132,-380" />
 
-<item itemtype="Node" CircId="Node-GND-Bridge1" mainComp="false" Pos="56,-340" />
+<item itemtype="Node" CircId="Node-GND-C" mainComp="false" Pos="56,-380" />
 
-<item itemtype="Node" CircId="Node-GND-Bridge2" mainComp="false" Pos="-148,-354" />
+<item itemtype="Node" CircId="Node-67" mainComp="false" Pos="56,-372" />
+
+<item itemtype="Node" CircId="Node-68" mainComp="false" Pos="64,-316" />
+
+<item itemtype="Node" CircId="Node-64" mainComp="false" Pos="-152,-332" />
+
+<item itemtype="Node" CircId="Node-73" mainComp="false" Pos="-132,-340" />
 
 <item itemtype="Connector" uid="Connector-74" startpinid="DcMotor-6-rPin" endpinid="L298P-3-OUT2" pointList="188,-504,188,-444,40,-444" />
 
@@ -60,15 +62,7 @@
 
 <item itemtype="Connector" uid="Connector-128" startpinid="Node-43-2" endpinid="L298P-3-IN1" pointList="-64,-436,-64,-452,-8,-452" />
 
-<item itemtype="Connector" uid="Connector-165" startpinid="Node-43-0" endpinid="Node-5V-Left-0" pointList="-64,-436,-64,-332" />
-
-<item itemtype="Connector" uid="Connector-166" startpinid="Uno-1-9" endpinid="L298P-3-EnA" pointList="-348,-332,-388,-332,-388,-412,-8,-412" />
-
-<item itemtype="Connector" uid="Connector-167" startpinid="Uno-1-10" endpinid="L298P-3-EnB" pointList="-348,-324,-380,-324,-380,-404,-8,-404" />
-
-<item itemtype="Connector" uid="Connector-5VL1" startpinid="Node-5V-Left-1" endpinid="Node-45-1" pointList="-64,-332,-92,-332" />
-
-<item itemtype="Connector" uid="Connector-5VL2" startpinid="Node-5V-Left-2" endpinid="Node-Left-IN-0" pointList="-64,-332,-64,-236" />
+<item itemtype="Connector" uid="Connector-5VL2" startpinid="Node-45b-2" endpinid="Node-Left-IN-0" pointList="-64,-332,-64,-236" />
 
 <item itemtype="Connector" uid="Connector-L1" startpinid="DcMotor-Left-Front-lPin" endpinid="L298P-Left-OUT1" pointList="108,-304,108,-252,40,-252" />
 
@@ -82,19 +76,11 @@
 
 <item itemtype="Connector" uid="Connector-L10" startpinid="Node-Left-IN-2" endpinid="L298P-Left-IN1" pointList="-64,-236,-64,-252,-8,-252" />
 
-<item itemtype="Connector" uid="Connector-L11" startpinid="L298P-Left-IN4" endpinid="Node-Left-GND-1" pointList="-8,-228,-120,-228" />
+<item itemtype="Connector" uid="Connector-L11" startpinid="L298P-Left-IN4" endpinid="Node-Left-GND-1" pointList="-8,-228,-120,-228,-120,-236" />
 
-<item itemtype="Connector" uid="Connector-L12" startpinid="L298P-Left-IN2" endpinid="Node-Left-GND-0" pointList="-8,-244,-120,-244,-120,-228" />
-
-<item itemtype="Connector" uid="Connector-L15" startpinid="Uno-1-5" endpinid="L298P-Left-EnA" pointList="-348,-372,-396,-372,-396,-212,-8,-212" />
-
-<item itemtype="Connector" uid="Connector-L16" startpinid="Uno-1-6" endpinid="L298P-Left-EnB" pointList="-348,-364,-404,-364,-404,-204,-8,-204" />
-
-<item itemtype="Connector" uid="Connector-BattPlus" startpinid="Battery-9-lPin" endpinid="Node-Batt-Plus-0" pointList="84,-316,64,-316" />
+<item itemtype="Connector" uid="Connector-L12" startpinid="L298P-Left-IN2" endpinid="Node-Left-GND-0" pointList="-8,-244,-120,-244,-120,-236" />
 
 <item itemtype="Connector" uid="Connector-VsLeft" startpinid="Node-Batt-Plus-2" endpinid="L298P-Left-Vs" pointList="64,-316,64,-212,40,-212" />
-
-<item itemtype="Connector" uid="Connector-VsRight" startpinid="Node-Batt-Plus-1" endpinid="L298P-3-Vs" pointList="64,-316,64,-412,40,-412" />
 
 <item itemtype="Connector" uid="Connector-BattMinus" startpinid="Battery-9-rPin" endpinid="Node-Batt-Minus-0" pointList="84,-284,56,-284" />
 
@@ -106,32 +92,52 @@
 
 <item itemtype="Connector" uid="Connector-195" startpinid="Node-56-1" endpinid="L298P-3-SenB" pointList="56,-396,40,-396" />
 
-<item itemtype="Connector" uid="Connector-196" startpinid="Node-Batt-Minus-1" endpinid="Node-GND-Bridge1-0" pointList="56,-284,56,-340" />
-
-<item itemtype="Connector" uid="Connector-196b" startpinid="Node-GND-Bridge1-1" endpinid="Node-56-0" pointList="56,-340,56,-396" />
+<item itemtype="Connector" uid="Connector-196b" startpinid="Node-GND-C-1" endpinid="Node-56-0" pointList="56,-380,56,-396" />
 
 <item itemtype="Connector" uid="Connector-197" startpinid="Node-56-2" endpinid="L298P-3-SenA" pointList="56,-396,56,-404,40,-404" />
 
-<item itemtype="Connector" uid="Connector-139" startpinid="Battery-27-lPin" endpinid="Node-45-0" pointList="-92,-336,-92,-332" />
-
-<item itemtype="Connector" uid="Connector-208" startpinid="Node-59-1" endpinid="Node-60-1" pointList="-148,-368,-148,-436,-120,-436" />
+<item itemtype="Connector" uid="Connector-208" startpinid="Node-GND-B-1" endpinid="Node-60-1" pointList="-132,-380,-132,-436,-120,-436" />
 
 <item itemtype="Connector" uid="Connector-211" startpinid="L298P-3-IN2" endpinid="Node-60-0" pointList="-8,-444,-120,-444,-120,-436" />
 
 <item itemtype="Connector" uid="Connector-212" startpinid="Node-60-2" endpinid="L298P-3-IN4" pointList="-120,-436,-120,-428,-8,-428" />
 
-<item itemtype="Connector" uid="Connector-147" startpinid="Node-45-2" endpinid="Uno-1-5V0" pointList="-92,-332,-204,-332" />
+<item itemtype="Connector" uid="Connector-229" startpinid="Node-43-0" endpinid="Node-45b-0" pointList="-64,-436,-64,-332" />
 
-<item itemtype="Connector" uid="Connector-209" startpinid="Battery-27-rPin" endpinid="Node-59-0" pointList="-92,-368,-148,-368" />
+<item itemtype="Connector" uid="Connector-256" startpinid="Node-67-1" endpinid="LM7805-1-ref" pointList="56,-372,-92,-372,-92,-368" />
 
-<item itemtype="Connector" uid="Connector-226" startpinid="Node-64-1" endpinid="Uno-1-GND1" pointList="-148,-340,-204,-340" />
+<item itemtype="Connector" uid="Connector-257" startpinid="Node-Batt-Minus-1" endpinid="Node-67-0" pointList="56,-284,56,-372" />
 
-<item itemtype="Connector" uid="Connector-227" startpinid="Node-59-2" endpinid="Node-GND-Bridge2-0" pointList="-148,-368,-148,-354" />
+<item itemtype="Connector" uid="Connector-258" startpinid="Node-67-2" endpinid="Node-GND-C-0" pointList="56,-372,56,-380" />
 
-<item itemtype="Connector" uid="Connector-227b" startpinid="Node-GND-Bridge2-1" endpinid="Node-64-0" pointList="-148,-354,-148,-340" />
+<item itemtype="Connector" uid="Connector-259" startpinid="Node-Batt-Plus-1" endpinid="LM7805-1-input" pointList="64,-316,0,-316,0,-352,-76,-352" />
 
-<item itemtype="Connector" uid="Connector-228" startpinid="Node-64-2" endpinid="Node-Left-GND-2" pointList="-148,-340,-148,-228,-120,-228" />
+<item itemtype="Connector" uid="Connector-261" startpinid="L298P-3-Vs" endpinid="Node-68-1" pointList="40,-412,64,-412,64,-316" />
 
-<item itemtype="Connector" uid="Connector-GND-Common" startpinid="Node-GND-Bridge1-2" endpinid="Node-GND-Bridge2-2" pointList="56,-340,-148,-354" />
+<item itemtype="Connector" uid="Connector-262" startpinid="Battery-9-lPin" endpinid="Node-68-0" pointList="84,-316,64,-316" />
+
+<item itemtype="Connector" uid="Connector-263" startpinid="Node-68-2" endpinid="Node-Batt-Plus-0" pointList="64,-316,64,-316" />
+
+<item itemtype="Connector" uid="Connector-247" startpinid="Node-64-2" endpinid="Uno-1-5V0" pointList="-152,-332,-204,-332" />
+
+<item itemtype="Connector" uid="Connector-246" startpinid="Node-45b-1" endpinid="Node-64-0" pointList="-64,-332,-152,-332" />
+
+<item itemtype="Connector" uid="Connector-245" startpinid="LM7805-1-output" endpinid="Node-64-1" pointList="-108,-352,-152,-352,-152,-332" />
+
+<item itemtype="Connector" uid="Connector-L16" startpinid="Uno-1-6" endpinid="L298P-Left-EnB" pointList="-348,-364,-404,-364,-404,-204,-8,-204" />
+
+<item itemtype="Connector" uid="Connector-L15" startpinid="Uno-1-5" endpinid="L298P-Left-EnA" pointList="-348,-372,-396,-372,-396,-212,-8,-212" />
+
+<item itemtype="Connector" uid="Connector-167" startpinid="Uno-1-10" endpinid="L298P-3-EnB" pointList="-348,-324,-380,-324,-380,-404,-8,-404" />
+
+<item itemtype="Connector" uid="Connector-166" startpinid="Uno-1-9" endpinid="L298P-3-EnA" pointList="-348,-332,-388,-332,-388,-412,-8,-412" />
+
+<item itemtype="Connector" uid="Connector-279" startpinid="Node-GND-B-0" endpinid="Node-GND-C-2" pointList="-132,-380,56,-380" />
+
+<item itemtype="Connector" uid="Connector-284" startpinid="Uno-1-GND1" endpinid="Node-73-1" pointList="-204,-340,-132,-340" />
+
+<item itemtype="Connector" uid="Connector-285" startpinid="Node-GND-B-2" endpinid="Node-73-0" pointList="-132,-380,-132,-340" />
+
+<item itemtype="Connector" uid="Connector-286" startpinid="Node-73-2" endpinid="Node-Left-GND-2" pointList="-132,-340,-132,-236,-120,-236" />
 
 </circuit>
