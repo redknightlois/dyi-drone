@@ -1,0 +1,9 @@
+
+src/1-circuit-test/build/
+
+# Support tools - binaries (use install.ps1 to download)
+support/arduino-cli/*.exe
+support/arduino-cli/LICENSE.txt
+support/simulide/*.exe
+support/simulide/data/
+support/simulide/examples/
