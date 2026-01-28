@@ -72,4 +72,15 @@ drone/
 - Verificar conexiones antes de cargar firmware al hardware real
 - Usar SimulIDE para probar cambios antes de desplegar
 - El firmware soporta comunicacion serial para depuracion
-- El codigo propiamente dicho tiene que estar en ingles. 
+- El codigo propiamente dicho tiene que estar en ingles
+
+## Skills Disponibles
+
+Existen archivos de skills con informacion detallada sobre instalacion y uso de herramientas:
+
+| Skill | Ubicacion | Descripcion |
+|-------|-----------|-------------|
+| Arduino CLI | `support/arduino-cli/skills.md` | Instalacion, configuracion y comandos |
+| SimulIDE | `support/simulide/skills.md` | Instalacion y uso del simulador |
+
+Estos archivos contienen instrucciones paso a paso, scripts de instalacion y opciones de configuracion. 
