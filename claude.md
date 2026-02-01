@@ -54,8 +54,15 @@ drone/
 ├── src/           # Codigo fuente principal
 ├── lib/           # Bibliotecas externas
 ├── include/       # Archivos de cabecera
-├── build/         # Archivos compilados (generado)
-└── claude.md      # Este archivo
+├── build/         # Archivos compilados y exportados (generado)
+│   ├── *.hex      # Firmware compilado
+│   ├── *.stl      # Modelos 3D para impresion
+│   ├── *.step     # Modelos 3D para CAD
+│   └── *.glb      # Modelos 3D para web viewer
+├── 3d-parts/      # Disenos 3D del frame (build123d)
+│   └── *.py       # Scripts de diseno
+├── support/       # Skills y documentacion de herramientas
+└── CLAUDE.md      # Este archivo
 ```
 
 ## Comandos Utiles
@@ -82,5 +89,21 @@ Existen archivos de skills con informacion detallada sobre instalacion y uso de 
 |-------|-----------|-------------|
 | Arduino CLI | `support/arduino-cli/skills.md` | Instalacion, configuracion y comandos |
 | SimulIDE | `support/simulide/skills.md` | Instalacion y uso del simulador |
+| Build123d | `support/build123d/skills.md` | Diseno 3D y exportacion de piezas |
 
-Estos archivos contienen instrucciones paso a paso, scripts de instalacion y opciones de configuracion. 
+Estos archivos contienen instrucciones paso a paso, scripts de instalacion y opciones de configuracion.
+
+## Piezas 3D
+
+El directorio `3d-parts/` contiene los disenos del frame del drone:
+
+| Archivo | Descripcion |
+|---------|-------------|
+| `frame_body.py` | Cuerpo central con montajes Arduino e IMU |
+| `frame_arm.py` | Brazos con soporte de motor (x4) |
+| `prop_guard.py` | Protectores de helice (x4) |
+| `battery_cover.py` | Tapa protectora de bateria |
+| `assembly.py` | Ensamble completo para visualizar |
+| `export_all.py` | Script para regenerar exports |
+
+Para regenerar los archivos STL/GLTF: `python 3d-parts/export_all.py`

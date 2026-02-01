@@ -7,3 +7,9 @@ support/arduino-cli/LICENSE.txt
 support/simulide/*.exe
 support/simulide/data/
 support/simulide/examples/
+
+.playwright-mcp/
+
+3d-parts/__pycache__/
+
+build/
