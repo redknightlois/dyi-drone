@@ -27,7 +27,7 @@ BATTERY_COMP_WIDTH = 30   # mm
 # Rail dimensions (to slide onto frame rails)
 RAIL_SLOT_WIDTH = 4.5   # mm (slightly larger than 4mm frame rails for clearance)
 RAIL_SLOT_DEPTH = 6     # mm
-RAIL_SPACING = BATTERY_COMP_WIDTH + 4  # mm between rail centers (30 + 4 = 34mm)
+RAIL_SPACING = 38       # mm between rail centers (matching frame body rail positions at ±19mm)
 
 # Finger grip
 GRIP_RADIUS = 8         # mm

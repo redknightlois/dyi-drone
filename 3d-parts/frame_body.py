@@ -177,7 +177,8 @@ def create_body():
             )
 
         # Battery rails on bottom (extending downward)
-        rail_y_offset = BATTERY_COMP_WIDTH / 2 + BATTERY_RAIL_WIDTH / 2
+        # Rails are positioned OUTSIDE the battery compartment to hold the battery
+        rail_y_offset = BATTERY_COMP_WIDTH / 2 + BATTERY_RAIL_WIDTH
         print(f"Battery Rails: Y = +/-{rail_y_offset:.1f} mm, extending to Z = -{BATTERY_RAIL_HEIGHT} mm")
         for side in [1, -1]:
             with BuildSketch(Plane.XY) as rail:

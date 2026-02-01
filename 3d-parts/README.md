@@ -12,11 +12,13 @@
 | Motor RPM | 43,000-50,000 RPM |
 | Controller | Arduino R4 WiFi |
 | IMU | MPU6050 |
+| Motor Driver | 2× DRV8833 (18×12mm each, 1.5A/channel) |
 | Battery | LiPo 2S (7.4V, 300-500mAh) |
 | Target Weight | ~100g total |
 | Print Bed | 220x220mm (Ender 3 V3 SE) |
 
 > **Note:** The 2S LiPo (7.4V) requires a voltage regulator to step down to 3.7V for the motors.
+> The DRV8833 is a MOSFET-based driver with minimal voltage drop (~0.2V), much better than L298N (~2V drop).
 
 ## Frame Dimensions
 
@@ -41,14 +43,17 @@
 
 | Component | Weight | Qty | Total |
 |-----------|--------|-----|-------|
-| Motors | 5g | 4 | 20g |
+| Motors (820 brushed) | 5g | 4 | 20g |
 | Battery (2S 300-500mAh) | ~25g | 1 | 25g |
-| Controller | ~10g | 1 | 10g |
+| Arduino R4 WiFi | ~10g | 1 | 10g |
 | MPU6050 | 4g | 1 | 4g |
-| Motor driver | ~10g | 1 | 10g |
+| DRV8833 driver | ~1g | 2 | 2g |
+| Voltage regulator | ~2g | 1 | 2g |
 | Frame (PLA) | ~20g | - | 20g |
 | Props + wires | ~10g | - | 10g |
-| **TOTAL** | | | **~100g** |
+| **TOTAL** | | | **~93g** |
+
+> Using 2× DRV8833 instead of L298N saves ~31g - significant for a micro drone.
 
 ## Print Settings
 
@@ -90,23 +95,27 @@
 1. Print all parts
 2. Insert motors into arm sockets (press-fit, 8.2mm socket for 8mm motor)
 3. Mount arms to body using M3x10 screws
-4. Clip prop guards onto arms
+4. Push prop guards onto motor mounts (friction-fit sleeve)
 5. Mount Arduino R4 WiFi to standoffs (M3x6 screws)
 6. Mount MPU6050 to center platform (M2.5 screws + vibration dampeners)
-7. Place battery in compartment
-8. Attach battery cover (slides onto rails)
+7. Mount DRV8833 driver on body (double-sided tape or small screws)
+8. Wire motors to DRV8833, DRV8833 to Arduino
+9. Connect voltage regulator (7.4V → 3.7V for motors)
+10. Place battery in compartment
+11. Attach battery cover (slides onto rails)
 
 ## Hardware Required
 
-| Item | Quantity | Size |
-|------|----------|------|
-| M3 screws | 16 | M3x10mm |
-| M3 screws | 4 | M3x6mm (Arduino) |
-| M2.5 screws | 4 | M2.5x6mm (IMU) |
+| Item | Quantity | Notes |
+|------|----------|-------|
+| M3 screws | 16 | M3x10mm (arms to body) |
+| M3 screws | 4 | M3x6mm (Arduino standoffs) |
+| M2.5 screws | 4 | M2.5x6mm (IMU mount) |
 | M3 nuts | 8 | Standard |
 | Vibration dampeners | 4 | For IMU |
 | Battery strap | 1 | 10mm wide |
-| Voltage regulator | 1 | 7.4V to 3.7V |
+| Voltage regulator | 1 | 7.4V → 3.7V (for motors) |
+| DRV8833 motor driver | 2 | 18×12mm module (pack of 2) |
 
 ## File Formats
 
@@ -155,12 +164,45 @@ The battery is placed below center to lower the center of gravity.
 ### Motor Specifications
 
 **820 Coreless Brushed Motors:**
-- Dimensions: 8mm diameter x 20mm length
+- Dimensions: 8mm diameter × 20mm length
 - Shaft: 1.0mm diameter, 7.5mm length
 - Voltage: DC 3.7V (1S LiPo equivalent)
 - RPM: 43,000-50,000 RPM
 - Weight: ~5g each
 - Compatible Props: 55-75mm
+
+### Motor Driver - DRV8833
+
+**Why DRV8833 over L298N:**
+
+| Feature | DRV8833 | L298N |
+|---------|---------|-------|
+| Voltage drop | ~0.2V | ~2V |
+| Size | 18×12mm | 55×49mm |
+| Weight | ~1g | ~33g |
+| Efficiency | High (MOSFET) | Low (BJT) |
+| Motor voltage | 3.5V delivered | 1.7V delivered* |
+
+*With 3.7V input to L298N, motors only get ~1.7V after the 2V drop.
+
+**DRV8833 Specs:**
+- 2 H-bridge channels per board
+- 1.5A continuous per channel (2A peak)
+- Operating voltage: 2.7V - 10.8V
+- PWM frequency: up to 250kHz
+- Built-in overcurrent protection
+
+**Wiring for 4 motors (2 boards needed):**
+```
+DRV8833 #1 (Front):        DRV8833 #2 (Rear):
+  OUT1 → Motor 1 (FR)        OUT1 → Motor 3 (RL)
+  OUT2 → Motor 2 (FL)        OUT2 → Motor 4 (RR)
+
+Both boards share:
+  VCC → 3.7V (from regulator)
+  GND → Common ground
+  IN1-IN4 → Arduino PWM pins
+```
 
 ### Propeller Clearance
 

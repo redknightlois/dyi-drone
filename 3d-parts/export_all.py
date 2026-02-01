@@ -320,7 +320,7 @@ def main():
     cover = create_battery_cover()
 
     print("  Creating assembly...")
-    body_parts, arm_parts, guard_parts, cover_parts = create_assembly()
+    body_parts, arm_parts, guard_parts, cover_parts, electronics_parts = create_assembly(include_electronics=True)
 
     # Combine all assembly parts into a single compound for export
     with BuildPart() as assembly_builder:
@@ -331,6 +331,9 @@ def main():
         for part in guard_parts:
             add(part)
         for part in cover_parts:
+            add(part)
+        # Add electronics
+        for name, part in electronics_parts:
             add(part)
     assembly = assembly_builder.part
 
@@ -373,13 +376,24 @@ def main():
         render_part(guard, EXPORT_DIR / "prop_guard.png", color='#FF6600')
         render_part(cover, EXPORT_DIR / "battery_cover.png", color='#228B22')
 
-        # Assembly views with colors
+        # Assembly views with colors (including electronics)
+        electronics_colors = {
+            "arduino": '#006400',   # Dark green
+            "imu": '#4B0082',       # Indigo
+            "battery": '#1E90FF',   # Blue
+            "driver": '#8B0000',    # Dark red
+        }
+
         assembly_parts = [
             (body_parts, '#505050'),    # Dark gray
             (arm_parts, '#4682B4'),     # Steel blue
             (guard_parts, '#FF6600'),   # Orange
             (cover_parts, '#228B22'),   # Forest green
         ]
+
+        # Add electronics parts
+        for name, part in electronics_parts:
+            assembly_parts.append(([part], electronics_colors.get(name, '#808080')))
 
         for view in ['iso', 'top', 'left', 'right']:
             render_assembly(

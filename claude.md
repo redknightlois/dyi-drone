@@ -93,6 +93,21 @@ Existen archivos de skills con informacion detallada sobre instalacion y uso de 
 
 Estos archivos contienen instrucciones paso a paso, scripts de instalacion y opciones de configuracion.
 
+## Hardware del Drone
+
+| Componente | Especificacion |
+|------------|----------------|
+| Motores | 820 Coreless Brushed (8mm x 20mm, 3.7V, 43000 RPM) |
+| Helices | 2.5" (63.5mm) |
+| Controlador | Arduino R4 WiFi |
+| IMU | MPU6050 |
+| Motor Driver | 2x DRV8833 (18x12mm c/u, 1.5A/canal, bajo voltage drop) |
+| Bateria | LiPo 2S (7.4V, 300-500mAh) |
+| Regulador | 7.4V a 3.7V para motores |
+| Peso objetivo | ~93g |
+
+> **Nota:** Se eligio DRV8833 sobre L298N por su menor caida de voltaje (~0.2V vs ~2V) y menor peso (~1g vs ~33g).
+
 ## Piezas 3D
 
 El directorio `3d-parts/` contiene los disenos del frame del drone:
@@ -101,7 +116,7 @@ El directorio `3d-parts/` contiene los disenos del frame del drone:
 |---------|-------------|
 | `frame_body.py` | Cuerpo central con montajes Arduino e IMU |
 | `frame_arm.py` | Brazos con soporte de motor (x4) |
-| `prop_guard.py` | Protectores de helice (x4) |
+| `prop_guard.py` | Protectores de helice con sleeve de friccion (x4) |
 | `battery_cover.py` | Tapa protectora de bateria |
 | `assembly.py` | Ensamble completo para visualizar |
 | `export_all.py` | Script para regenerar exports |

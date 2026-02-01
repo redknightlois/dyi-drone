@@ -12,21 +12,22 @@ Specifications:
 - Upper ring height: 4mm
 - Total height: 41mm
 - 4 struts at 0, 90, 180, 270 degrees
-- Clip at 180 degree position, 8mm wide x 12mm long
+- Central friction-fit sleeve for motor mount attachment
 
 Geometry notes (for assembly):
-- Guard is centered at origin (ring center)
-- Clip extends in -X direction (180 degrees)
+- Guard is centered at origin (ring center = motor center)
+- Central sleeve slides over the motor mount cylinder
+- Friction fit holds guard in place
 """
 
 from build123d import *
 from ocp_vscode import show
 import math
 
-# Guard dimensions (updated per plan) - exported for assembly.py
+# Guard dimensions - exported for assembly.py
 PROP_DIAMETER = 63.5    # mm (2.5 inch propeller)
 CLEARANCE = 5           # mm safety margin each side
-GUARD_ID = 75           # mm internal diameter (63.5 + 5 + 5 + wall adjustment)
+GUARD_ID = 75           # mm internal diameter
 GUARD_WALL = 3          # mm wall thickness
 GUARD_OD = 81           # mm outer diameter (75 + 3 + 3)
 
@@ -39,15 +40,18 @@ TOTAL_HEIGHT = 41       # mm (12 + 25 + 4)
 # Strut dimensions
 STRUT_WIDTH = 4         # mm
 
-# Clip dimensions
-CLIP_WIDTH = 8          # mm
-CLIP_LENGTH = 12        # mm
-CLIP_TAB_WIDTH = 4      # mm (matches arm slot width)
-CLIP_TAB_HEIGHT = 8     # mm
+# Central sleeve for friction fit (must match frame_arm.py motor mount)
+MOTOR_MOUNT_OD = 12     # mm - from frame_arm.py
+SLEEVE_ID = 12.3        # mm - slight clearance for friction fit
+SLEEVE_OD = 16          # mm - wall thickness for strength
+SLEEVE_HEIGHT = 10      # mm - enough grip length
+
+# No strut extension needed with friction fit
+STRUT_EXTENSION = 0     # mm - exported for assembly.py compatibility
 
 
 def create_prop_guard(verbose=False):
-    """Create a cage-style prop guard with upper ring and struts."""
+    """Create a cage-style prop guard with central friction-fit sleeve."""
 
     inner_radius = GUARD_ID / 2
     outer_radius = GUARD_OD / 2
@@ -62,7 +66,8 @@ def create_prop_guard(verbose=False):
         print(f"Strut height: {STRUT_HEIGHT} mm")
         print(f"Upper ring height: {UPPER_RING_HEIGHT} mm")
         print(f"Total height: {TOTAL_HEIGHT} mm")
-        print(f"Clip at: ({-(inner_radius + GUARD_WALL + CLIP_LENGTH/2):.1f}, 0) mm")
+        print(f"Sleeve ID: {SLEEVE_ID} mm (fits over {MOTOR_MOUNT_OD} mm motor mount)")
+        print(f"Sleeve height: {SLEEVE_HEIGHT} mm")
         print("=" * 50)
 
     with BuildPart() as guard:
@@ -80,6 +85,7 @@ def create_prop_guard(verbose=False):
             strut_x = strut_center_radius * math.cos(angle_rad)
             strut_y = strut_center_radius * math.sin(angle_rad)
 
+            # Main strut going up
             with BuildSketch(Plane.XY.offset(LOWER_RING_HEIGHT)) as strut:
                 with Locations([(strut_x, strut_y)]):
                     Rectangle(STRUT_WIDTH, STRUT_WIDTH)
@@ -92,26 +98,28 @@ def create_prop_guard(verbose=False):
             Circle(inner_radius, mode=Mode.SUBTRACT)
         extrude(amount=UPPER_RING_HEIGHT)
 
-        # Mounting clip (at 180 degree position, pointing outward)
-        clip_x = -(inner_radius + GUARD_WALL + CLIP_LENGTH/2)
-        with BuildSketch(Plane.XY) as clip_base:
-            with Locations([(clip_x, 0)]):
-                RectangleRounded(CLIP_LENGTH, CLIP_WIDTH, radius=1)
-        extrude(amount=LOWER_RING_HEIGHT - 2)
+        # Central friction-fit sleeve - slides over motor mount
+        # Extends downward from center of lower ring
+        with BuildSketch(Plane.XY) as sleeve:
+            Circle(SLEEVE_OD / 2)
+            Circle(SLEEVE_ID / 2, mode=Mode.SUBTRACT)
+        extrude(amount=-SLEEVE_HEIGHT)
 
-        # Clip tab (the part that snaps into arm slot)
-        tab_x = -(inner_radius + GUARD_WALL + CLIP_LENGTH - 3)
-        with BuildSketch(Plane.XY.offset(LOWER_RING_HEIGHT/2 - CLIP_TAB_HEIGHT/2)) as tab:
-            with Locations([(tab_x, 0)]):
-                Rectangle(4, CLIP_TAB_WIDTH - 0.4)  # Slightly smaller for snap fit
-        extrude(amount=CLIP_TAB_HEIGHT)
+        # Add connecting spokes from sleeve to lower ring (4 spokes)
+        spoke_angles = [45, 135, 225, 315]  # Between the struts
+        for angle in spoke_angles:
+            angle_rad = math.radians(angle)
 
-        # Flexibility slot in clip for snap action
-        flex_slot_x = -(inner_radius + GUARD_WALL + CLIP_LENGTH/2)
-        with BuildSketch(Plane.XZ.offset(0)) as flex_slot:
-            with Locations([(flex_slot_x, LOWER_RING_HEIGHT/2)]):
-                Rectangle(CLIP_LENGTH - 4, 2)
-        extrude(amount=1.5, both=True, mode=Mode.SUBTRACT)
+            # Spoke connects sleeve OD to ring ID
+            spoke_length = inner_radius - SLEEVE_OD / 2
+            spoke_center_radius = SLEEVE_OD / 2 + spoke_length / 2
+            spoke_x = spoke_center_radius * math.cos(angle_rad)
+            spoke_y = spoke_center_radius * math.sin(angle_rad)
+
+            with BuildSketch(Plane.XY) as spoke:
+                with Locations([(spoke_x, spoke_y)]):
+                    Rectangle(spoke_length, 3, rotation=angle)
+            extrude(amount=3)  # Thin spoke at bottom of ring
 
     return guard.part
 

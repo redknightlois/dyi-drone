@@ -1,5 +1,5 @@
 """
-Drone Frame Arm - Motor mount arm with prop guard attachment point.
+Drone Frame Arm - Motor mount arm for 820 brushed motors.
 
 Specifications:
 - Total length: 65mm from mount plate center to motor center
@@ -8,7 +8,7 @@ Specifications:
 - Motor socket: 8.2mm ID (0.2mm clearance), 15mm deep
 - Motor mount OD: 12mm, depth: 18mm
 - Mount plate: 14 x 18 mm with M3 holes (10mm spacing)
-- Prop guard clip: 6x6mm post centered above motor
+- Prop guard attaches via friction-fit sleeve over motor mount
 
 Geometry notes (for assembly):
 - Arm is built along Y axis
@@ -40,12 +40,6 @@ MOUNT_LENGTH = 18       # mm
 MOUNT_HOLE_DIA = 3.2    # mm (M3 clearance)
 MOUNT_HOLE_SPACING = 10 # mm
 
-# Prop guard attachment
-CLIP_POST_HEIGHT = 12   # mm
-CLIP_POST_SIZE = 6      # mm (square)
-CLIP_SLOT_WIDTH = 4     # mm
-CLIP_SLOT_DEPTH = 8     # mm
-
 # Calculated positions (for assembly.py to import)
 # Origin is at mount plate center (Y=0)
 # Motor is at Y = ARM_TOTAL_LENGTH
@@ -53,12 +47,13 @@ ARM_LENGTH = ARM_TOTAL_LENGTH  # Export for assembly compatibility
 
 
 def create_arm(verbose=False):
-    """Create a single drone arm with motor mount and prop guard clip.
+    """Create a single drone arm with motor mount.
 
     Geometry:
     - Origin (0,0) is at mount plate center
     - Motor center is at (0, ARM_TOTAL_LENGTH) = (0, 65)
     - Arm beam runs from mount plate to just before motor
+    - Prop guard friction-fits over the motor mount cylinder
     """
 
     # Key positions along Y axis (mount plate at origin)
@@ -74,6 +69,7 @@ def create_arm(verbose=False):
         print(f"Arm beam starts: Y = {arm_beam_start_y} mm")
         print(f"Motor center: Y = {motor_center_y} mm")
         print(f"Total length (mount to motor): {ARM_TOTAL_LENGTH} mm")
+        print(f"Motor mount OD: {MOTOR_MOUNT_OD} mm (for guard friction fit)")
         print("=" * 50)
 
     with BuildPart() as arm:
@@ -117,19 +113,6 @@ def create_arm(verbose=False):
                     with Locations([(0, slot_y)]):
                         RectangleRounded(ARM_WIDTH - 4, 8, radius=2)
                 extrude(amount=-ARM_HEIGHT + 2, mode=Mode.SUBTRACT)
-
-        # Prop guard clip post (between arm and motor mount)
-        clip_y = motor_center_y - MOTOR_MOUNT_OD/2 - CLIP_POST_SIZE/2 - 2
-        with BuildSketch(Plane.XY.offset(ARM_HEIGHT)) as clip_post:
-            with Locations([(0, clip_y)]):
-                RectangleRounded(CLIP_POST_SIZE, CLIP_POST_SIZE, radius=1)
-        extrude(amount=CLIP_POST_HEIGHT)
-
-        # Clip slot for prop guard snap-in
-        with BuildSketch(Plane.XZ.offset(clip_y)) as clip_slot:
-            with Locations([(0, ARM_HEIGHT + CLIP_POST_HEIGHT/2)]):
-                RectangleRounded(CLIP_SLOT_WIDTH, CLIP_SLOT_DEPTH, radius=0.5)
-        extrude(amount=CLIP_POST_SIZE, both=True, mode=Mode.SUBTRACT)
 
         # Wire channel through arm (for motor wires)
         wire_length = motor_center_y - arm_beam_start_y + 5

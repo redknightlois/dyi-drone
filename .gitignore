@@ -13,3 +13,5 @@ support/simulide/examples/
 3d-parts/__pycache__/
 
 build/
+
+3d-parts/components/__pycache__/
