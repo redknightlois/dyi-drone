@@ -9,7 +9,7 @@ Dimensions from official datasheet:
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 
 # Arduino R4 WiFi dimensions
 PCB_LENGTH = 68.5       # mm
@@ -93,4 +93,5 @@ def create_arduino_r4():
 arduino = create_arduino_r4()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(arduino)

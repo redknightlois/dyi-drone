@@ -8,7 +8,7 @@ Typical 2S 300-500mAh battery dimensions:
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 
 # Battery dimensions (typical 2S 300-500mAh)
 BATTERY_LENGTH = 50     # mm
@@ -58,4 +58,5 @@ def create_lipo_2s():
 lipo = create_lipo_2s()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(lipo)

@@ -8,7 +8,7 @@ Dimensions:
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 
 # GY-521 module dimensions
 PCB_LENGTH = 21         # mm
@@ -73,4 +73,5 @@ def create_mpu6050():
 mpu6050 = create_mpu6050()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(mpu6050)

@@ -3,15 +3,16 @@ Drone Frame Body - Central body with Arduino mount, IMU center mount, and batter
 
 Specifications:
 - Dimensions: 95 x 75 x 4 mm (base plate)
-- Arduino R4 WiFi mounting (68.5 x 53.4 mm, holes at 66 x 48 mm spacing)
-- MPU6050 IMU mount at geometric center (25 x 20 mm platform)
+- Arduino R4 WiFi mounting: 4x M3 standoffs (66 x 48 mm spacing, 8mm tall)
+- MPU6050 IMU mount: raised platform at center (25 x 20 mm, 4x M2.5 holes)
+- DRV8833 motor drivers: 2x boards with M2 standoffs (3mm tall)
 - LiPo 2S battery compartment (55 x 30 mm centered below)
 - 4 arm mounting points at 45 degrees, 40mm from center
 - Triangular truss pattern for weight reduction (stronger than honeycomb)
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 import math
 
 # Body dimensions (updated per plan)
@@ -50,6 +51,16 @@ ARM_MOUNT_HOLE_SPACING = 10  # mm between holes
 # Triangular truss pattern (stronger than honeycomb)
 TRUSS_HOLE_SIZE = 10  # mm triangle side
 TRUSS_WALL = 3        # mm wall thickness (increased for strength)
+
+# DRV8833 motor driver mounts (2 boards needed for 4 motors)
+DRV8833_HOLE_SPACING_L = 14  # mm (length direction)
+DRV8833_HOLE_SPACING_W = 8   # mm (width direction)
+DRV8833_STANDOFF_HEIGHT = 3  # mm (shorter than Arduino)
+DRV8833_STANDOFF_OD = 4      # mm
+DRV8833_STANDOFF_ID = 2.2    # mm (M2 clearance)
+# Positions for the two DRV8833 boards (matching assembly.py)
+DRV8833_POS_1 = (20, 10)     # Front motors driver
+DRV8833_POS_2 = (20, -10)    # Rear motors driver
 
 
 def create_triangular_pattern(length, width, tri_size=10, wall=3):
@@ -176,6 +187,34 @@ def create_body():
                 Location((ix, iy, BODY_THICKNESS + IMU_PLATFORM_HEIGHT))
             )
 
+        # DRV8833 motor driver standoffs (2 boards for 4 motors)
+        drv8833_positions = [DRV8833_POS_1, DRV8833_POS_2]
+        drv8833_names = ["#1 (Front)", "#2 (Rear)"]
+
+        for idx, (dx, dy) in enumerate(drv8833_positions):
+            print(f"DRV8833 {drv8833_names[idx]}: center ({dx}, {dy}), M2 standoffs")
+
+            # 2 diagonal mounting holes per board (common for small modules)
+            hole_offsets = [
+                (DRV8833_HOLE_SPACING_L/2, DRV8833_HOLE_SPACING_W/2),
+                (-DRV8833_HOLE_SPACING_L/2, -DRV8833_HOLE_SPACING_W/2),
+            ]
+
+            for hx, hy in hole_offsets:
+                px, py = dx + hx, dy + hy
+
+                # Standoff cylinder
+                with BuildSketch(Plane.XY.offset(BODY_THICKNESS)) as drv_standoff:
+                    with Locations([(px, py)]):
+                        Circle(DRV8833_STANDOFF_OD / 2)
+                extrude(amount=DRV8833_STANDOFF_HEIGHT)
+
+                # M2 screw hole
+                Hole(DRV8833_STANDOFF_ID/2, depth=DRV8833_STANDOFF_HEIGHT + BODY_THICKNESS).locate(
+                    Location((px, py, BODY_THICKNESS + DRV8833_STANDOFF_HEIGHT))
+                )
+        print()
+
         # Battery rails on bottom (extending downward)
         # Rails are positioned OUTSIDE the battery compartment to hold the battery
         rail_y_offset = BATTERY_COMP_WIDTH / 2 + BATTERY_RAIL_WIDTH
@@ -250,4 +289,5 @@ def create_body():
 body = create_body()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(body)

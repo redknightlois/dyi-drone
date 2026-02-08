@@ -17,7 +17,7 @@ Geometry notes (for assembly):
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 
 # Total arm length (mount plate center to motor center)
 ARM_TOTAL_LENGTH = 65   # mm - this is the key dimension
@@ -127,4 +127,5 @@ def create_arm(verbose=False):
 arm = create_arm()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(arm)

@@ -21,7 +21,7 @@ Geometry notes (for assembly):
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 import math
 
 # Guard dimensions - exported for assembly.py
@@ -128,4 +128,5 @@ def create_prop_guard(verbose=False):
 guard = create_prop_guard()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(guard)

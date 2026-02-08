@@ -38,6 +38,8 @@
 | frame_arm | 4 | Motor mount arms |
 | prop_guard | 4 | Propeller protection cages |
 | battery_cover | 1 | LiPo battery protection |
+| power_source_box | 1 | LM2596 DC-DC converter enclosure (with integrated L-bracket) |
+| power_source_lid | 1 | Optional friction-fit lid with potentiometer access |
 
 ## Weight Budget
 
@@ -90,6 +92,16 @@
 - No supports needed
 - 15% infill sufficient
 
+**Power Source Box:**
+- Print with open side up
+- No supports needed
+- 20% infill for protection
+
+**Power Source Lid:**
+- Print with flat side down
+- No supports needed
+- 15% infill sufficient
+
 ## Assembly Order
 
 1. Print all parts
@@ -98,7 +110,7 @@
 4. Push prop guards onto motor mounts (friction-fit sleeve)
 5. Mount Arduino R4 WiFi to standoffs (M3x6 screws)
 6. Mount MPU6050 to center platform (M2.5 screws + vibration dampeners)
-7. Mount DRV8833 driver on body (double-sided tape or small screws)
+7. Mount DRV8833 drivers on standoffs (M2x5mm screws)
 8. Wire motors to DRV8833, DRV8833 to Arduino
 9. Connect voltage regulator (7.4V → 3.7V for motors)
 10. Place battery in compartment
@@ -111,6 +123,7 @@
 | M3 screws | 16 | M3x10mm (arms to body) |
 | M3 screws | 4 | M3x6mm (Arduino standoffs) |
 | M2.5 screws | 4 | M2.5x6mm (IMU mount) |
+| M2 screws | 4 | M2x5mm (DRV8833 mounts) |
 | M3 nuts | 8 | Standard |
 | Vibration dampeners | 4 | For IMU |
 | Battery strap | 1 | 10mm wide |
@@ -224,3 +237,43 @@ The frame uses a **triangular truss pattern** instead of hexagonal honeycomb:
 - 3mm walls provide crash resistance
 - Pattern avoids all mounting points and critical areas
 - ~40% lighter than solid while maintaining structural integrity
+
+## Power Source Box
+
+Protective enclosure for the LM2596 DC-DC buck converter module (7.4V → 3.7V).
+
+### Dimensions
+
+| Dimension | Value |
+|-----------|-------|
+| Outer Size | 60 × 36 × 26 mm |
+| Inner Size | 56 × 32 × 24 mm |
+| Wall Thickness | 2 mm |
+| Base Thickness | 2 mm |
+
+### Features
+
+- **Open-top design** for easy PCB access and heat dissipation
+- **Terminal cutouts** on both short ends (20 × 16 mm) for screw terminals
+- **Ventilation slots** on long sides (4 slots per side, 2 × 14 mm each)
+- **L-shaped mounting bracket** with M4 hole at one corner
+- **Optional friction-fit lid** with potentiometer access hole
+
+### LM2596 Module Specs
+
+| Spec | Value |
+|------|-------|
+| Input Voltage | 4.5V - 40V |
+| Output Voltage | 1.25V - 37V (adjustable) |
+| Output Current | 3A max |
+| PCB Size | ~50 × 27 mm (with display) |
+| Adjustment | Potentiometer on top |
+
+### Assembly
+
+1. Place LM2596 module in box (fits snugly)
+2. Route input wires (7.4V from battery) through terminal cutout
+3. Route output wires (3.7V to motors) through opposite cutout
+4. Adjust output voltage to 3.7V using potentiometer
+5. Mount to drone frame using the L-bracket screw hole (M4)
+6. Optionally add friction-fit lid for protection

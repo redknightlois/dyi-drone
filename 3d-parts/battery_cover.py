@@ -11,7 +11,7 @@ Specifications:
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 import math
 
 # Cover dimensions (updated per plan)
@@ -136,4 +136,5 @@ def create_battery_cover(verbose=False):
 cover = create_battery_cover()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(cover)

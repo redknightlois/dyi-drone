@@ -24,6 +24,11 @@ from frame_arm import create_arm
 from prop_guard import create_prop_guard
 from battery_cover import create_battery_cover
 from assembly import create_assembly
+from components.lm2596 import (
+    create_enclosure as create_lm2596_enclosure,
+    create_lid as create_lm2596_lid,
+    create_assembly as create_lm2596_assembly,
+)
 
 # Export directory - use project root /build folder
 PROJECT_ROOT = script_dir.parent
@@ -253,6 +258,26 @@ def generate_viewer_html():
                 <a href="battery_cover.stl" class="download-btn" onclick="event.stopPropagation()">Download STL</a>
             </div>
 
+            <div class="part-card" onclick="loadModel('lm2596_assembly.glb', this)">
+                <h3>LM2596 Assembly</h3>
+                <p>Complete enclosure with lid and PCB</p>
+                <span class="qty">Preview Only</span>
+            </div>
+
+            <div class="part-card" onclick="loadModel('lm2596_case.glb', this)">
+                <h3>LM2596 Case</h3>
+                <p>Open-top box with terminal cutouts</p>
+                <span class="qty">x1</span>
+                <a href="lm2596_case.stl" class="download-btn" onclick="event.stopPropagation()">Download STL</a>
+            </div>
+
+            <div class="part-card" onclick="loadModel('lm2596_lid.glb', this)">
+                <h3>LM2596 Lid</h3>
+                <p>Cover with display window and access holes</p>
+                <span class="qty">x1</span>
+                <a href="lm2596_lid.stl" class="download-btn" onclick="event.stopPropagation()">Download STL</a>
+            </div>
+
             <div class="specs">
                 <div class="section-title">Specifications</div>
                 <div class="spec-row">
@@ -319,7 +344,20 @@ def main():
     print("  Creating battery cover...")
     cover = create_battery_cover()
 
-    print("  Creating assembly...")
+    print("  Creating LM2596 enclosure...")
+    lm2596_enclosure = create_lm2596_enclosure()
+
+    print("  Creating LM2596 lid...")
+    lm2596_lid = create_lm2596_lid()
+
+    print("  Creating LM2596 assembly...")
+    lm2596_assy_enc, lm2596_assy_lid = create_lm2596_assembly()
+    with BuildPart() as lm2596_assy_builder:
+        add(lm2596_assy_enc)
+        add(lm2596_assy_lid)
+    lm2596_assembly = lm2596_assy_builder.part
+
+    print("  Creating drone assembly...")
     body_parts, arm_parts, guard_parts, cover_parts, electronics_parts = create_assembly(include_electronics=True)
 
     # Combine all assembly parts into a single compound for export
@@ -343,6 +381,9 @@ def main():
     export_stl_file(arm, "frame_arm.stl")
     export_stl_file(guard, "prop_guard.stl")
     export_stl_file(cover, "battery_cover.stl")
+    export_stl_file(lm2596_enclosure, "lm2596_case.stl")
+    export_stl_file(lm2596_lid, "lm2596_lid.stl")
+    export_stl_file(lm2596_assembly, "lm2596_assembly.stl")
     export_stl_file(assembly, "drone_assembly.stl")
 
     # Export STEP files (for CAD import)
@@ -351,6 +392,9 @@ def main():
     export_step_file(arm, "frame_arm.step")
     export_step_file(guard, "prop_guard.step")
     export_step_file(cover, "battery_cover.step")
+    export_step_file(lm2596_enclosure, "lm2596_case.step")
+    export_step_file(lm2596_lid, "lm2596_lid.step")
+    export_step_file(lm2596_assembly, "lm2596_assembly.step")
     export_step_file(assembly, "drone_assembly.step")
 
     # Export GLTF files (for web viewer)
@@ -359,6 +403,9 @@ def main():
     export_gltf_file(arm, "frame_arm.glb")
     export_gltf_file(guard, "prop_guard.glb")
     export_gltf_file(cover, "battery_cover.glb")
+    export_gltf_file(lm2596_enclosure, "lm2596_case.glb")
+    export_gltf_file(lm2596_lid, "lm2596_lid.glb")
+    export_gltf_file(lm2596_assembly, "lm2596_assembly.glb")
     export_gltf_file(assembly, "drone_assembly.glb")
 
     # Generate HTML viewer
