@@ -14,7 +14,7 @@ Specifications:
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 
 # DRV8833 module dimensions
 PCB_LENGTH = 18         # mm
@@ -76,4 +76,5 @@ def create_motor_driver():
 motor_driver = create_motor_driver()
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     show(motor_driver)

@@ -15,7 +15,7 @@ Electronics:
 """
 
 from build123d import *
-from ocp_vscode import show
+from ocp_vscode import show, set_defaults
 import math
 
 # Import frame parts
@@ -170,6 +170,7 @@ def create_assembly(include_electronics=True):
 body_parts, arm_parts, guard_parts, cover_parts, electronics_parts = create_assembly(include_electronics=True)
 
 if __name__ == "__main__":
+    set_defaults(axes=True, axes0=True, grid=[True, False, False])
     # Collect all parts for display
     all_parts = []
     all_names = []
