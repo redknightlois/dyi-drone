@@ -15,3 +15,7 @@ support/simulide/examples/
 build/
 
 3d-parts/components/__pycache__/
+
+.agents/skills/
+
+.claude/skills/

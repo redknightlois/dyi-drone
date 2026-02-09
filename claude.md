@@ -89,9 +89,18 @@ Existen archivos de skills con informacion detallada sobre instalacion y uso de 
 |-------|-----------|-------------|
 | Arduino CLI | `support/arduino-cli/skills.md` | Instalacion, configuracion y comandos |
 | SimulIDE | `support/simulide/skills.md` | Instalacion y uso del simulador |
-| Build123d | `support/build123d/skills.md` | Diseno 3D y exportacion de piezas |
+| Build123d | `support/skills/build123/SKILL.md` | Diseno 3D y exportacion de piezas |
 
 Estos archivos contienen instrucciones paso a paso, scripts de instalacion y opciones de configuracion.
+
+### Instalacion de skills
+
+Las skills en `support/skills/` se descubren via symlinks en `.claude/skills/` y `.agents/skills/`. Para crearlos:
+
+- **WSL/Linux/macOS:** `./ensure-skills.sh`
+- **Windows:** `.\ensure-skills.ps1`
+
+El script es idempotente — se puede ejecutar multiples veces sin efectos secundarios.
 
 ## Hardware del Drone
 
